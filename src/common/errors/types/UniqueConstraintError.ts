@@ -5,6 +5,6 @@ export class UniqueConstraintError extends ConflictError {
   constructor(e: PrismaClientError) {
     const uniqueField = e.meta.target;
 
-    super(`A record wit this ${uniqueField} already exists`);
+    super(`Um registro com este ${uniqueField} já existe`);
   }
 }
