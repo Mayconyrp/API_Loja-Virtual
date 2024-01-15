@@ -1,27 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
-import { UsuarioRepository } from 'src/usuarios/repository/usuario.repository';
-import { NotFoundError } from 'src/common/errors/types/NotFoundError';
+import { UsuarioRepository } from './repository/usuario.repository';
+import { NotFoundError } from '../../src/common/errors/types/NotFoundError';
 import { UsuarioEntity } from './entities/usuario.entity';
-//import { UnauthorizedError } from 'src/common/errors/types/UnauthorizedError';
 
 @Injectable()
 export class UsuariosService {
-  constructor(private readonly repository: UsuarioRepository) {}
+  constructor(private readonly usuarioRepository: UsuarioRepository) {}
 
-  create(createUsuarioDto: CreateUsuarioDto) {
-    return this.repository.create(createUsuarioDto);
+  async create(createUsuarioDto: CreateUsuarioDto): Promise<UsuarioEntity> {
+    const createdUsuario =
+      await this.usuarioRepository.create(createUsuarioDto);
+    return createdUsuario;
   }
 
   findAll() {
-    //throw new UnauthorizedError('Nao autorizado');
-    return this.repository.findAll();
+    return this.usuarioRepository.findAll();
   }
 
   async findOne(id: number): Promise<UsuarioEntity> {
-    //return this.repository.findOne(id);
-    const usuario = await this.repository.findOne(id);
+    const usuario = await this.usuarioRepository.findOne(id);
     if (!usuario) {
       throw new NotFoundError('Usuario não encontrado!');
     }
@@ -29,10 +28,10 @@ export class UsuariosService {
   }
 
   update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
-    return this.repository.update(id, updateUsuarioDto);
+    return this.usuarioRepository.update(id, updateUsuarioDto);
   }
 
   remove(id: number) {
-    return this.repository.remove(id);
+    return this.usuarioRepository.remove(id);
   }
 }

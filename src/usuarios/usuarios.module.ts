@@ -3,10 +3,9 @@ import { UsuariosService } from './usuarios.service';
 import { UsuariosController } from './usuarios.controller';
 import { UsuarioRepository } from 'src/usuarios/repository/usuario.repository';
 import { PrismaService } from 'prisma/prisma.service';
-import { EnderecosModule } from '../enderecos/enderecos.module';
 
 @Module({
-  imports: [EnderecosModule],
+  imports: [],
   controllers: [UsuariosController],
   providers: [UsuariosService, PrismaService, UsuarioRepository],
 })
