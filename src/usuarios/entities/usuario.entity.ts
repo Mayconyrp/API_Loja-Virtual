@@ -6,5 +6,4 @@ export class UsuarioEntity implements Usuario {
   nome: string;
   senha: number;
   telefone: number;
-  endereco_id: number;
 }

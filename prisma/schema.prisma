@@ -13,8 +13,7 @@ model Usuario {
   nome        String
   senha       Int
   telefone    Int
-  endereco    Endereco? @relation(fields: [endereco_id], references: [id])
-  endereco_id Int?
+  enderecos   Endereco[]
 
   @@map("usuarios")
 }
@@ -24,7 +23,8 @@ model Endereco {
   cidade  String
   rua     String
   cep     String
-  Usuario Usuario[]
+  usuario_id Int?
+  usuario   Usuario? @relation(fields: [usuario_id], references: [id])
 
   @@map("enderecos")
 }
