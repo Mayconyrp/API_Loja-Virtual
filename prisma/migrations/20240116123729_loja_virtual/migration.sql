@@ -3,8 +3,9 @@ CREATE TABLE `usuarios` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `email` VARCHAR(191) NOT NULL,
     `nome` VARCHAR(191) NOT NULL,
-    `senha` INTEGER NOT NULL,
+    `senha` VARCHAR(191) NOT NULL,
     `telefone` INTEGER NOT NULL,
+    `admin` BOOLEAN NOT NULL DEFAULT false,
 
     UNIQUE INDEX `usuarios_email_key`(`email`),
     PRIMARY KEY (`id`)

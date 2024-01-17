@@ -40,8 +40,16 @@ export class ProdutoRepository {
     });
   }
 
-  async findAll() {
-    return await this.prisma.produto.findMany();
+  async findAll(): Promise<ProdutoEntity[]> {
+    return await this.prisma.produto.findMany({
+      include: {
+        categoria: {
+          select: {
+            nome_categoria: true,
+          },
+        },
+      },
+    });
   }
 
   async findOne(id: number) {

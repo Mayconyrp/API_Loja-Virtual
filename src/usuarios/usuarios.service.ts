@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { UsuarioRepository } from './repository/usuario.repository';
-import { NotFoundError } from '../../src/common/errors/types/NotFoundError';
+//import { NotFoundError } from '../../src/common/errors/types/NotFoundError';
 import { UsuarioEntity } from './entities/usuario.entity';
 
 @Injectable()
@@ -18,13 +18,17 @@ export class UsuariosService {
   findAll() {
     return this.usuarioRepository.findAll();
   }
-
+  /*
   async findOne(id: number): Promise<UsuarioEntity> {
     const usuario = await this.usuarioRepository.findOne(id);
     if (!usuario) {
       throw new NotFoundError('Usuario não encontrado!');
     }
     return usuario;
+  }
+*/
+  async findByEmail(email: string): Promise<UsuarioEntity | null> {
+    return this.usuarioRepository.findByEmail(email);
   }
 
   update(id: number, updateUsuarioDto: UpdateUsuarioDto) {

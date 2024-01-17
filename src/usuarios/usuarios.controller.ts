@@ -6,11 +6,12 @@ import {
   Patch,
   Param,
   Delete,
-  //HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { UsuariosService } from './usuarios.service';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('usuarios')
 export class UsuariosController {
@@ -19,23 +20,21 @@ export class UsuariosController {
   @Post()
   async create(@Body() createUsuarioDto: CreateUsuarioDto) {
     return this.usuariosService.create(createUsuarioDto);
-    /*const user = await this.usuariosService.create(createUsuarioDto);
-    return {
-      message: 'Usuário criado com sucesso!',
-      data: user,
-      status: HttpStatus.CREATED,
-    };
-    */
   }
 
   @Get()
   findAll() {
     return this.usuariosService.findAll();
   }
+  @Get('/restrita')
+  @UseGuards(AuthGuard('jwt')) // Decorator responsável pelo Guard
+  rotarestrita() {
+    return 'Parabens!! Voce acessou a rota restrita';
+  }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usuariosService.findOne(+id);
+  @Post('email')
+  findByEmail(@Body('email') email: string) {
+    return this.usuariosService.findByEmail(email);
   }
 
   @Patch(':id')

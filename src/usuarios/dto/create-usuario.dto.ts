@@ -3,6 +3,7 @@ import {
   IsNumber,
   IsString,
   IsOptional,
+  IsBoolean,
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
@@ -15,11 +16,15 @@ export class CreateUsuarioDto {
   @IsString()
   nome: string;
 
-  @IsNumber()
-  senha: number;
+  @IsString()
+  senha: string;
 
   @IsNumber()
   telefone: number;
+
+  @IsBoolean()
+  @IsOptional()
+  admin?: boolean;
 
   @IsOptional()
   @ValidateNested({ each: true })

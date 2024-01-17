@@ -4,6 +4,7 @@ import { CreateUsuarioDto } from 'src/usuarios/dto/create-usuario.dto';
 import { UpdateUsuarioDto } from 'src/usuarios/dto/update-usuario.dto';
 import { UsuarioEntity } from '../entities/usuario.entity';
 import { Usuario } from '@prisma/client';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsuarioRepository {
@@ -15,6 +16,7 @@ export class UsuarioRepository {
     const usuario = await this.prisma.usuario.create({
       data: {
         ...usuarioData,
+        senha: await bcrypt.hash(createUsuarioDto.senha, 10),
         enderecos: {
           create: enderecos.map((endereco) => ({
             cidade: endereco.cidade,
@@ -31,6 +33,9 @@ export class UsuarioRepository {
     return usuario;
   }
 
+  async findByEmail(email: string): Promise<UsuarioEntity | null> {
+    return this.prisma.usuario.findUnique({ where: { email } });
+  }
   async findAll(): Promise<Usuario[]> {
     return await this.prisma.usuario.findMany({
       include: {
@@ -38,8 +43,18 @@ export class UsuarioRepository {
       },
     });
   }
-
-  async findOne(id: number): Promise<Usuario> {
+  /*async findByEmail(email: string): Promise<Usuario> {
+    return this.prisma.usuario.findUnique({
+      where: {
+        email,
+      },
+      include: {
+        enderecos: true,
+      },
+    });
+  }
+*/
+  /*async findOne(id: number): Promise<Usuario> {
     return this.prisma.usuario.findUnique({
       where: {
         id,
@@ -49,7 +64,7 @@ export class UsuarioRepository {
       },
     });
   }
-
+*/
   async update(
     id: number,
     updateUsuarioDto: UpdateUsuarioDto,

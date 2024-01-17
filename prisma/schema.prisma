@@ -8,12 +8,13 @@ datasource db {
 }
 
 model Usuario {
-  id          Int      @id @default(autoincrement())
-  email       String   @unique
-  nome        String
-  senha       Int
-  telefone    Int
-  enderecos   Endereco[]
+  id            Int      @id @default(autoincrement())
+  email         String   @unique
+  nome          String
+  senha         String
+  telefone      Int
+  admin Boolean  @default(false)
+  enderecos     Endereco[]
 
   @@map("usuarios")
 }
