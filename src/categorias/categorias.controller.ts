@@ -5,7 +5,7 @@ import {
   Body,
   Patch,
   Param,
-  // Delete,
+  Delete,
 } from '@nestjs/common';
 import { CategoriasService } from './categorias.service';
 import { CreateCategoriaDto } from './dto/create-categoria.dto';
@@ -36,5 +36,10 @@ export class CategoriasController {
     @Body() updateCategoriaDto: UpdateCategoriaDto,
   ) {
     return this.categoriasService.update(+id, updateCategoriaDto);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.categoriasService.remove(+id);
   }
 }

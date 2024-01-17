@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { UsuarioRepository } from './repository/usuario.repository';
-//import { NotFoundError } from '../../src/common/errors/types/NotFoundError';
 import { UsuarioEntity } from './entities/usuario.entity';
+import { NotFoundError } from 'src/common/errors/types/NotFoundError';
 
 @Injectable()
 export class UsuariosService {
@@ -18,7 +18,7 @@ export class UsuariosService {
   findAll() {
     return this.usuarioRepository.findAll();
   }
-  /*
+
   async findOne(id: number): Promise<UsuarioEntity> {
     const usuario = await this.usuarioRepository.findOne(id);
     if (!usuario) {
@@ -26,7 +26,7 @@ export class UsuariosService {
     }
     return usuario;
   }
-*/
+
   async findByEmail(email: string): Promise<UsuarioEntity | null> {
     return this.usuarioRepository.findByEmail(email);
   }
@@ -35,7 +35,13 @@ export class UsuariosService {
     return this.usuarioRepository.update(id, updateUsuarioDto);
   }
 
-  remove(id: number) {
-    return this.usuarioRepository.remove(id);
+  async remove(id: number): Promise<string> {
+    const usuario = await this.usuarioRepository.remove(id);
+
+    if (!usuario) {
+      throw new NotFoundException(`Usuário com ID ${id} não encontrado.`);
+    }
+
+    return `Usuário com ID ${id} deletado com sucesso.`;
   }
 }

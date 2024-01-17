@@ -26,6 +26,7 @@ export class UsuariosController {
   findAll() {
     return this.usuariosService.findAll();
   }
+
   @Get('/restrita')
   @UseGuards(AuthGuard('jwt')) // Decorator responsável pelo Guard
   rotarestrita() {

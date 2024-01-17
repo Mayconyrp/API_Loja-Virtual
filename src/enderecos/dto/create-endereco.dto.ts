@@ -1,4 +1,4 @@
-import { IsString, IsEmail } from 'class-validator';
+import { IsString, IsEmail, IsOptional } from 'class-validator';
 
 export class CreateEnderecoDto {
   id: number;
@@ -8,6 +8,7 @@ export class CreateEnderecoDto {
   rua: string;
   @IsString()
   cep: string;
+  @IsOptional()
   @IsEmail()
   email?: string;
 }

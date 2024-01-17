@@ -1,5 +1,5 @@
 // categorias.service.ts
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CategoriasRepository } from './repository/categorias.repository';
 import { CreateCategoriaDto } from './dto/create-categoria.dto';
 import { UpdateCategoriaDto } from './dto/update-categoria.dto';
@@ -26,5 +26,18 @@ export class CategoriasService {
     updateCategoriaDto: UpdateCategoriaDto,
   ): Promise<Categoria> {
     return this.categoriasRepository.update(id, updateCategoriaDto);
+  }
+
+  async remove(id: number): Promise<string> {
+    const categoria = await this.categoriasRepository.findOne(id);
+
+    if (!categoria) {
+      throw new NotFoundException(`Categoria com ID ${id} não encontrada.`);
+    }
+
+    await this.categoriasRepository.remove(id);
+
+    // Remoção bem-sucedida, retornando uma mensagem
+    return `Categoria com ID ${id} deletada com sucesso.`;
   }
 }

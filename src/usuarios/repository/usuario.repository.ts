@@ -3,7 +3,7 @@ import { PrismaService } from '../../../prisma/prisma.service';
 import { CreateUsuarioDto } from 'src/usuarios/dto/create-usuario.dto';
 import { UpdateUsuarioDto } from 'src/usuarios/dto/update-usuario.dto';
 import { UsuarioEntity } from '../entities/usuario.entity';
-import { Usuario } from '@prisma/client';
+import { Prisma, Usuario } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -33,29 +33,13 @@ export class UsuarioRepository {
     return usuario;
   }
 
-  async findByEmail(email: string): Promise<UsuarioEntity | null> {
-    return this.prisma.usuario.findUnique({ where: { email } });
-  }
-  async findAll(): Promise<Usuario[]> {
-    return await this.prisma.usuario.findMany({
-      include: {
-        enderecos: true,
-      },
-    });
-  }
-  /*async findByEmail(email: string): Promise<Usuario> {
-    return this.prisma.usuario.findUnique({
-      where: {
-        email,
-      },
-      include: {
-        enderecos: true,
-      },
-    });
-  }
-*/
-  /*async findOne(id: number): Promise<Usuario> {
-    return this.prisma.usuario.findUnique({
+  async update(
+    id: number,
+    updateUsuarioDto: UpdateUsuarioDto,
+  ): Promise<UsuarioEntity> {
+    const { enderecos, ...usuarioData } = updateUsuarioDto;
+
+    const usuario = await this.prisma.usuario.findUnique({
       where: {
         id,
       },
@@ -63,24 +47,20 @@ export class UsuarioRepository {
         enderecos: true,
       },
     });
-  }
-*/
-  async update(
-    id: number,
-    updateUsuarioDto: UpdateUsuarioDto,
-  ): Promise<UsuarioEntity> {
-    const { enderecos, ...usuarioData } = updateUsuarioDto;
 
-    // Transforme o array de endereços para o formato que o Prisma espera
-    const enderecosUpdate = enderecos?.map((endereco) => ({
-      where: { id: endereco.id },
+    if (!usuario) {
+      throw new NotFoundException('Usuário não encontrado');
+    }
+
+    const enderecoUpdates = enderecos?.map((endereco) => ({
+      where: { id: usuario.id },
       data: endereco,
     }));
 
-    const data = {
+    const data: Prisma.UsuarioUpdateInput = {
       ...usuarioData,
       enderecos: {
-        update: enderecosUpdate,
+        update: enderecoUpdates,
       },
     };
 
@@ -95,7 +75,28 @@ export class UsuarioRepository {
     });
   }
 
-  async remove(id: number): Promise<UsuarioEntity> {
+  async findOne(id: number): Promise<UsuarioEntity | null> {
+    return this.prisma.usuario.findUnique({
+      where: { id },
+      include: {
+        enderecos: true,
+      },
+    });
+  }
+
+  async findByEmail(email: string): Promise<UsuarioEntity | null> {
+    return this.prisma.usuario.findUnique({ where: { email } });
+  }
+
+  async findAll(): Promise<Usuario[]> {
+    return this.prisma.usuario.findMany({
+      include: {
+        enderecos: true,
+      },
+    });
+  }
+
+  async remove(id: number): Promise<UsuarioEntity | null> {
     const usuario = await this.prisma.usuario.findUnique({
       where: {
         id,
@@ -106,10 +107,9 @@ export class UsuarioRepository {
     });
 
     if (!usuario) {
-      throw new NotFoundException(`Usuário com ID ${id} não encontrado.`);
+      return null;
     }
 
-    // Remova o usuário e seus endereços
     await this.prisma.usuario.delete({
       where: {
         id,

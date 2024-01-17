@@ -1,24 +1,19 @@
 import {
   Controller,
   Get,
-  Post,
+  //Post,
   Body,
   Patch,
   Param,
-  Delete,
+  //Delete,
 } from '@nestjs/common';
 import { EnderecosService } from './enderecos.service';
-import { CreateEnderecoDto } from './dto/create-endereco.dto';
+//import { CreateEnderecoDto } from './dto/create-endereco.dto';
 import { UpdateEnderecoDto } from './dto/update-endereco.dto';
 
 @Controller('enderecos')
 export class EnderecosController {
   constructor(private readonly enderecosService: EnderecosService) {}
-
-  @Post()
-  create(@Body() createEnderecoDto: CreateEnderecoDto) {
-    return this.enderecosService.create(createEnderecoDto);
-  }
 
   @Get()
   findAll() {
@@ -37,9 +32,15 @@ export class EnderecosController {
   ) {
     return this.enderecosService.update(+id, updateEnderecoDto);
   }
+}
 
-  @Delete(':id')
+/* 
+  @Post()
+  create(@Body() createEnderecoDto: CreateEnderecoDto) {
+    return this.enderecosService.create(createEnderecoDto);
+  }
+@Delete(':id')
   remove(@Param('id') id: string) {
     return this.enderecosService.remove(+id);
   }
-}
+*/

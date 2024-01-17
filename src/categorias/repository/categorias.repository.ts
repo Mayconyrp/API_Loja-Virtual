@@ -1,9 +1,9 @@
 // categorias.repository.ts
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../../prisma/prisma.service';
+import { Categoria } from '@prisma/client';
 import { CreateCategoriaDto } from '../dto/create-categoria.dto';
 import { UpdateCategoriaDto } from '../dto/update-categoria.dto';
-import { Categoria } from '@prisma/client';
 
 @Injectable()
 export class CategoriasRepository {
@@ -55,6 +55,38 @@ export class CategoriasRepository {
         produtos: true,
       },
     });
+  }
+
+  async remove(id: number): Promise<Categoria> {
+    const categoria = await this.prisma.categoria.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        produtos: true,
+      },
+    });
+
+    if (!categoria) {
+      throw new NotFoundException(`Categoria with id ${id} not found`);
+    }
+
+    await this.prisma.produto.deleteMany({
+      where: {
+        categoria_id: id,
+      },
+    });
+
+    await this.prisma.categoria.delete({
+      where: {
+        id,
+      },
+      include: {
+        produtos: true,
+      },
+    });
+
+    return categoria;
   }
 
   async findAll(): Promise<Categoria[]> {
