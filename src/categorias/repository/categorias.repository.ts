@@ -33,9 +33,8 @@ export class CategoriasRepository {
   ): Promise<Categoria> {
     const { produtos, ...categoriaData } = updateCategoriaDto;
 
-    // Transforme o array de produtos para o formato que o Prisma espera
     const produtosUpdate = produtos?.map((produto) => ({
-      where: { id: produto.id }, // ou outro campo único
+      where: { id: produto.codigo },
       data: produto,
     }));
 
@@ -90,6 +89,9 @@ export class CategoriasRepository {
   }
 
   async findAll(): Promise<Categoria[]> {
+    return this.prisma.categoria.findMany({});
+  }
+  async buscarCategoriaProduto(): Promise<Categoria[]> {
     return this.prisma.categoria.findMany({
       include: {
         produtos: true,
@@ -102,9 +104,9 @@ export class CategoriasRepository {
       where: {
         id,
       },
-      include: {
-        produtos: true,
-      },
+      // include: {
+      // produtos: true,
+      //},
     });
 
     if (!categoria) {

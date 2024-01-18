@@ -17,6 +17,10 @@ export class CategoriasService {
     return this.categoriasRepository.findAll();
   }
 
+  buscarCategoriaProduto(): Promise<Categoria[]> {
+    return this.categoriasRepository.buscarCategoriaProduto();
+  }
+
   async findOne(id: number): Promise<Categoria> {
     return this.categoriasRepository.findOne(id);
   }

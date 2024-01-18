@@ -28,7 +28,11 @@ export class UsuariosService {
   }
 
   async findByEmail(email: string): Promise<UsuarioEntity | null> {
-    return this.usuarioRepository.findByEmail(email);
+    const usuario = await this.usuarioRepository.findByEmail(email);
+    if (!usuario) {
+      throw new NotFoundError('Usuario não encontrado!');
+    }
+    return usuario;
   }
 
   update(id: number, updateUsuarioDto: UpdateUsuarioDto) {

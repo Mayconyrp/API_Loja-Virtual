@@ -8,30 +8,31 @@ datasource db {
 }
 
 model Usuario {
-  id            Int      @id @default(autoincrement())
-  email         String   @unique
-  nome          String
-  senha         String
-  telefone      Int
-  admin Boolean  @default(false)
-  enderecos     Endereco[]
+  id        Int        @id @default(autoincrement())
+  email     String     @unique
+  nome      String
+  senha     String
+  telefone  Int
+  admin     Boolean    @default(false)
+  enderecos Endereco[]
 
   @@map("usuarios")
 }
 
 model Endereco {
-  id      Int       @id @default(autoincrement())
-  cidade  String
-  rua     String
-  cep     String
+  id         Int      @id @default(autoincrement())
+  cidade     String
+  rua        String
+  cep        String
   usuario_id Int?
-  usuario   Usuario? @relation(fields: [usuario_id], references: [id])
+  usuario    Usuario? @relation(fields: [usuario_id], references: [id])
 
   @@map("enderecos")
 }
 
 model Produto {
   id           Int       @id @default(autoincrement())
+  codigo        Int     @unique
   nome_produto String
   preco        Int
   descricao    String
@@ -42,9 +43,10 @@ model Produto {
   @@map("produtos")
 }
 
+
 model Categoria {
   id             Int       @id @default(autoincrement())
-  nome_categoria String
+  nome_categoria String    @unique
   produtos       Produto[]
 
   @@map("categorias")

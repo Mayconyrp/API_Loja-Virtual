@@ -6,6 +6,8 @@ import {
   Patch,
   Param,
   //Delete,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { EnderecosService } from './enderecos.service';
 //import { CreateEnderecoDto } from './dto/create-endereco.dto';
@@ -15,16 +17,19 @@ import { UpdateEnderecoDto } from './dto/update-endereco.dto';
 export class EnderecosController {
   constructor(private readonly enderecosService: EnderecosService) {}
 
+  @HttpCode(HttpStatus.OK)
   @Get()
   findAll() {
     return this.enderecosService.findAll();
   }
 
+  @HttpCode(HttpStatus.OK)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.enderecosService.findOne(+id);
   }
 
+  @HttpCode(HttpStatus.OK)
   @Patch(':id')
   update(
     @Param('id') id: string,

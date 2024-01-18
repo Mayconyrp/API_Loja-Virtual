@@ -42,13 +42,15 @@ export class ProdutoRepository {
 
   async findAll(): Promise<ProdutoEntity[]> {
     return await this.prisma.produto.findMany({
-      include: {
+      /*include: {
         categoria: {
           select: {
             nome_categoria: true,
           },
         },
       },
+      */
+      //Tirando a redundancia da rota categorias/produtos.
     });
   }
 

@@ -25,12 +25,14 @@ CREATE TABLE `enderecos` (
 -- CreateTable
 CREATE TABLE `produtos` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `codigo` INTEGER NOT NULL,
     `nome_produto` VARCHAR(191) NOT NULL,
     `preco` INTEGER NOT NULL,
     `descricao` VARCHAR(191) NOT NULL,
     `imagem` VARCHAR(191) NOT NULL,
     `categoria_id` INTEGER NULL,
 
+    UNIQUE INDEX `produtos_codigo_key`(`codigo`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -39,6 +41,7 @@ CREATE TABLE `categorias` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `nome_categoria` VARCHAR(191) NOT NULL,
 
+    UNIQUE INDEX `categorias_nome_categoria_key`(`nome_categoria`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

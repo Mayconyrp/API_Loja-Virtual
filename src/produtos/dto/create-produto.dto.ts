@@ -3,7 +3,7 @@ import { IsString, IsNumber, IsOptional } from 'class-validator';
 export class CreateProdutoDto {
   @IsOptional()
   @IsNumber()
-  id?: number;
+  codigo: number;
 
   @IsString()
   nome_produto: string;

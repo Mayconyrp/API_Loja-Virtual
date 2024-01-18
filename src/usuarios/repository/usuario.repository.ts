@@ -77,7 +77,9 @@ export class UsuarioRepository {
 
   async findOne(id: number): Promise<UsuarioEntity | null> {
     return this.prisma.usuario.findUnique({
-      where: { id },
+      where: {
+        id: id,
+      },
       include: {
         enderecos: true,
       },
