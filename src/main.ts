@@ -6,9 +6,24 @@ import { UnauthorizedInterceptor } from './common/errors/interceptors/unauthoriz
 import { NotFoundInterceptor } from './common/errors/interceptors/notfound.interceptor';
 import { DatabaseInterceptor } from './common/errors/interceptors/database.interceptor';
 import { ConflictInterceptor } from './common/errors/interceptors/conflict.interceptor';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const config = new DocumentBuilder()
+    .setTitle('E-Commerce')
+    .setDescription(
+      'Bem-vindo à API de Comércio Eletrônico, uma solução abrangente projetada para simplificar e potencializar a gestão de sua loja online. Com foco na praticidade e eficiência, nossa API oferece suporte a três elementos essenciais: Usuário, Categoria e Produto.',
+    )
+    .setVersion('1.0')
+    .addTag('Auth')
+    .addTag('Usuarios')
+    .addTag('Categorias')
+    .addTag('Produtos')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
