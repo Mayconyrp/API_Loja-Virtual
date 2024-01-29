@@ -58,16 +58,32 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-## Support
+## Sobre o Projeto
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Bem-vindos!
 
-## Stay in touch
+Esta API simula um E-commerce, oferecendo recursos para gerenciar usuários, produtos, categorias e endereços. Utilizo o Prisma ORM em conjunto com o MySQL, e as credenciais estão armazenadas no arquivo .env.
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Para iniciar a aplicação, basta executar o comando npm install. Se houver alguma dependência ausente do Prisma, recomendo também executar npx prisma generate para garantir a geração adequada.
 
-## License
+Fiquem à vontade para explorar e utilizar a API. Em caso de dúvidas ou sugestões, estou à disposição!
 
-Nest is [MIT licensed](LICENSE).
+Ressalto que faço uso de dados aninhados. Por exemplo, ao cadastrar um usuário, é obrigatório cadastrar um endereço também. Da mesma forma, ao cadastrar um produto, é necessário que exista uma categoria para ele antes.
+
+A estrutura do banco de dados é definida por modelos, onde temos:
+
+Usuario: Representa os dados do usuário, incluindo informações como email, nome, senha, telefone, e se é um administrador. Um usuário pode ter vários endereços.
+
+Endereco: Contém informações de endereço, como cidade, rua, CEP. Um endereço está associado a um usuário.
+
+Produto: Armazena dados de produtos, como código, nome, preço, descrição, imagem, e está associado a uma categoria.
+
+Categoria: Representa as categorias dos produtos e pode ter vários produtos associados.
+
+As relações entre esses modelos são estabelecidas por meio de chaves estrangeiras. Por exemplo, a relação entre Usuario e Endereco é 1-n (um usuário pode ter vários endereços, mas um endereço pertence a um único usuário). Já a relação entre Produto e Categoria é n-1 (um produto pertence a uma única categoria, mas uma categoria pode ter vários produtos). Essas relações garantem uma estrutura organizada e eficiente para o banco de dados.
+
+
+
+
+
+
