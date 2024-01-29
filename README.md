@@ -56,6 +56,8 @@ Categoria: Representa as categorias dos produtos e pode ter vários produtos ass
 
 As relações entre esses modelos são estabelecidas por meio de chaves estrangeiras. Por exemplo, a relação entre Usuario e Endereco é 1-n (um usuário pode ter vários endereços, mas um endereço pertence a um único usuário). Já a relação entre Produto e Categoria é n-1 (um produto pertence a uma única categoria, mas uma categoria pode ter vários produtos). Essas relações garantem uma estrutura organizada e eficiente para o banco de dados.
 
+A porta principal para acessar a API é o localhost:3030.
+
 
 
 
